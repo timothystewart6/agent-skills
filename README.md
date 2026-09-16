@@ -17,13 +17,13 @@ GitHub CLI can install skills from this repository for a wide range of coding ag
 Install one skill for your current agent
 
 ```bash
-gh skill install timothystewart6/skills pr-ready-merge --scope user
+gh skill install timothystewart6/agent-skills pr-ready-merge --scope user
 ```
 
 Install it for several agents at user scope
 
 ```bash
-gh skill install timothystewart6/skills pr-ready-merge \
+gh skill install timothystewart6/agent-skills pr-ready-merge \
   --scope user \
   --agent github-copilot \
   --agent codex \
@@ -33,13 +33,13 @@ gh skill install timothystewart6/skills pr-ready-merge \
 Install every skill in the repository
 
 ```bash
-gh skill install timothystewart6/skills --all --scope user
+gh skill install timothystewart6/agent-skills --all --scope user
 ```
 
 You can also preview a skill before installing it
 
 ```bash
-gh skill preview timothystewart6/skills pr-ready-merge
+gh skill preview timothystewart6/agent-skills pr-ready-merge
 ```
 
 ## Repository layout
@@ -67,7 +67,7 @@ Create a kebab-case directory under `skills/`, add its `SKILL.md`, and add a sho
 Run the repository validation before opening a pull request
 
 ```bash
-./scripts/validate-skills.sh
+bash ./scripts/validate-skills.sh
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the repository conventions.
