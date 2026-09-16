@@ -40,13 +40,13 @@ See [`references/repair-protocol.md`](references/repair-protocol.md) for the det
 Install globally for the current agent
 
 ```bash
-gh skill install timothystewart6/skills pr-ready-merge --scope user
+gh skill install timothystewart6/agent-skills pr-ready-merge --scope user
 ```
 
 Install for GitHub Copilot, Codex, and Claude Code
 
 ```bash
-gh skill install timothystewart6/skills pr-ready-merge \
+gh skill install timothystewart6/agent-skills pr-ready-merge \
   --scope user \
   --agent github-copilot \
   --agent codex \
