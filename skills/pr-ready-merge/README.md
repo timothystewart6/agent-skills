@@ -12,7 +12,7 @@ The full agent workflow lives in [`SKILL.md`](SKILL.md).
 - opens a pull request or reuses the existing one
 - waits for CI and investigates failures to root cause
 - writes regression tests for real fixes when the repository has an applicable test pattern
-- supports Copilot review, agent review, or both
+- defaults to adversarial agent review; Copilot review requires explicit user opt-in
 - requests Copilot review at most once
 - falls back to adversarial agent review if the Copilot request fails
 - rebases onto the latest base branch before final merge gates when needed
@@ -21,13 +21,13 @@ The full agent workflow lives in [`SKILL.md`](SKILL.md).
 
 ## Review modes
 
-The skill asks which review mode to use unless one was already selected.
+**Agent review is the default.** The skill does not ask a review-mode question for ordinary PR, validation, or merge work.
 
-1. Copilot review
-2. Agent review
-3. Copilot + agent review
+- **Agent review (default):** Run the adversarial agent review without requesting GitHub Copilot.
+- **Copilot review (explicit opt-in):** Request it only when the user explicitly asks for Copilot to review the current PR.
+- **Copilot + agent review (explicit opt-in):** Perform both only when the user explicitly asks for both.
 
-Copilot is requested through GitHub's normal reviewer mechanism and is never requested more than once for the pull request.
+An open PR, existing review comments, or a normal request to ship work is not permission to request Copilot. If requested, the Copilot reviewer is asked at most once through GitHub's normal mechanism.
 
 ## Repair behavior
 
