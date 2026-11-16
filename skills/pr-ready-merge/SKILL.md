@@ -1,6 +1,6 @@
 ---
 name: pr-ready-merge
-description: Take the current local Git branch from finished implementation through verification, commit, push, pull request creation, CI repair, code review, final rebase, conversation resolution, and squash merge. Use when the user asks to finish, ship, PR, review, validate, or merge work that already exists in a local Git repository. The workflow verifies the actual diff, runs the repository's existing checks, diagnoses failures to root cause, adds regression tests for real bugs, optionally requests GitHub Copilot review exactly once, can perform an independent adversarial review, waits for CI, and merges only after all gates are clean.
+description: Take the current local Git branch from finished implementation through verification, commit, push, pull request creation, CI repair, code review, final rebase, conversation resolution, and squash merge. Use when the user asks to finish, ship, PR, review, validate, or merge work that already exists in a local Git repository. The workflow verifies the actual diff, runs the repository's existing checks, diagnoses failures to root cause, adds regression tests for real bugs, defaults to an independent adversarial agent review and requests GitHub Copilot review only when explicitly authorized by the user, waits for CI, and merges only after all gates are clean.
 ---
 
 # PR Ready Merge
@@ -11,19 +11,15 @@ Drive the current branch from local work to a clean merged pull request without 
 
 Before changing the repository, determine the repository root, current branch, working tree state, configured remotes, and likely base branch.
 
-Ask one review-mode question unless the user already selected a mode in the same request.
+Use **Agent review** by default, without asking which review mode to use. A request to finish, ship, PR, review, validate, or merge code does not authorize spending GitHub Copilot review credits.
 
-1. Copilot review
-2. Agent review
-3. Copilot + agent review
+Select a Copilot mode only when the user explicitly requests a GitHub Copilot review for the current PR task:
 
-Explain the choices briefly if needed.
+- **Agent review (default):** Skip Copilot and perform the adversarial review in `references/review-checklist.md`.
+- **Copilot review (explicit opt-in):** Request GitHub Copilot exactly once using GitHub's normal reviewer mechanism. If the request fails, do not retry; perform agent review instead.
+- **Copilot + agent review (explicit opt-in):** Request Copilot once, handle its findings, and then perform adversarial agent review before final merge gates.
 
-- Copilot review requests GitHub Copilot exactly once using GitHub's normal reviewer mechanism. If that one request fails, do not retry it. Perform the agent review instead.
-- Agent review skips Copilot and performs the adversarial review in `references/review-checklist.md`.
-- Copilot + agent review requests Copilot once, handles its review, then performs the adversarial agent review before final merge gates.
-
-Never silently choose a review mode.
+Do not ask the user to choose among modes just because this skill is invoked, a PR is open, or review threads exist. The availability of a reviewer, a skill's examples, or a prior campaign configuration is not authorization to request Copilot review.
 
 ## Non-negotiable rules
 
@@ -31,6 +27,7 @@ Never silently choose a review mode.
 - Never discard, reset, overwrite, or hide user changes to make the branch appear clean.
 - Never weaken tests, lower coverage thresholds, skip required checks, or bypass branch protections to obtain a green result.
 - Never use an admin override to merge.
+- Never request GitHub Copilot review unless the user explicitly requested it for the current PR task. Required repository approvals remain mandatory, but they do not authorize an optional Copilot request.
 - Never request Copilot review more than once for the PR, including after later pushes.
 - Never treat a review comment as a required code change without investigating whether it identifies a real issue.
 - Never mark a bug fixed until its root cause is understood and the fix is verified.
@@ -98,7 +95,7 @@ Do not dismiss a failing check as flaky without evidence. If retrying is justifi
 
 #### Copilot review
 
-Request GitHub Copilot through GitHub's standard reviewer request mechanism. With GitHub CLI, prefer the supported reviewer form such as `gh pr edit <number> --add-reviewer @copilot` when available in the installed version.
+Use this path only for explicit user opt-in. Request GitHub Copilot through GitHub's standard reviewer request mechanism. With GitHub CLI, prefer the supported reviewer form such as `gh pr edit <number> --add-reviewer @copilot` when available in the installed version.
 
 Attempt the Copilot review request exactly once.
 
